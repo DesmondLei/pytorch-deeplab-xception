@@ -3,6 +3,7 @@ from tqdm import tqdm
 import numpy as np
 from mypath import Path
 
+
 def calculate_weigths_labels(dataset, dataloader, num_classes):
     # Create an instance from the data loader
     z = np.zeros((num_classes,))
@@ -23,7 +24,11 @@ def calculate_weigths_labels(dataset, dataloader, num_classes):
         class_weight = 1 / (np.log(1.02 + (frequency / total_frequency)))
         class_weights.append(class_weight)
     ret = np.array(class_weights)
-    classes_weights_path = os.path.join(Path.db_root_dir(dataset), dataset+'_classes_weights.npy')
+    parameters_dir = "/work/scratch/lei/MyProject/t_chucai/models_and_parameters/parameters/classes_weights"
+    if not os.path.exists(parameters_dir):
+        os.makedirs(parameters_dir)
+    # classes_weights_path = os.path.join(Path.db_root_dir(dataset), dataset+'_classes_weights.npy')
+    classes_weights_path = os.path.join(parameters_dir, dataset + '_classes_weights.npy')
     np.save(classes_weights_path, ret)
 
     return ret
